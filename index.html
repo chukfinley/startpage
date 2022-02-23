@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html data-lt-installed="true" class=" wtyzvoaa idc0_336" lang="en"><script>
+    (function() {
+    class RuffleMimeType {
+        constructor(a, b, c) {
+            this.type = a, this.description = b, this.suffixes = c
+        }
+    }
+    class RuffleMimeTypeArray {
+        constructor(a) {
+            this.__mimetypes = [], this.__named_mimetypes = {};
+            for (let b of a) this.install(b)
+        }
+        install(a) {
+            let b = this.__mimetypes.length;
+            this.__mimetypes.push(a), this.__named_mimetypes[a.type] = a, this[a.type] = a, this[b] = a
+        }
+        item(a) {
+            return this.__mimetypes[a]
+        }
+        namedItem(a) {
+            return this.__named_mimetypes[a]
+        }
+        get length() {
+            return this.__mimetypes.length
+        }
+    }
+    class RufflePlugin extends RuffleMimeTypeArray {
+        constructor(a, b, c, d) {
+            super(d), this.name = a, this.description = b, this.filename = c
+        }
+        install(a) {
+            a.enabledPlugin || (a.enabledPlugin = this), super.install(a)
+        }
+    }
+    class RufflePluginArray {
+        constructor(a) {
+            this.__plugins = [], this.__named_plugins = {};
+            for (let b of a) this.install(b)
+        }
+        install(a) {
+            let b = this.__plugins.length;
+            this.__plugins.push(a), this.__named_plugins[a.name] = a, this[a.name] = a, this[b] = a
+        }
+        item(a) {
+            return this.__plugins[a]
+        }
+        namedItem(a) {
+            return this.__named_plugins[a]
+        }
+        get length() {
+            return this.__plugins.length
+        }
+    }
+    const FLASH_PLUGIN = new RufflePlugin("Shockwave Flash", "Shockwave Flash 32.0 r0", "ruffle.js", [new RuffleMimeType("application/futuresplash", "Shockwave Flash", "spl"), new RuffleMimeType("application/x-shockwave-flash", "Shockwave Flash", "swf"), new RuffleMimeType("application/x-shockwave-flash2-preview", "Shockwave Flash", "swf"), new RuffleMimeType("application/vnd.adobe.flash-movie", "Shockwave Flash", "swf")]);
+
+    function install_plugin(a) {
+        navigator.plugins.install || Object.defineProperty(navigator, "plugins", {
+            value: new RufflePluginArray(navigator.plugins),
+            writable: !1
+        }), navigator.plugins.install(a), 0 < a.length && !navigator.mimeTypes.install && Object.defineProperty(navigator, "mimeTypes", {
+            value: new RuffleMimeTypeArray(navigator.mimeTypes),
+            writable: !1
+        });
+        for (var b = 0; b < a.length; b += 1) navigator.mimeTypes.install(a[b])
+    }
+    install_plugin(FLASH_PLUGIN);
+})();
+</script><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <title>Docker WebUI</title>
+    <noscript>
+        For full functionality of this site it is necessary to enable JavaScript.
+        Here are the <a href="https://www.enable-javascript.com/">
+            instructions how to enable JavaScript in your web browser</a>.
+    </noscript>
+    <link rel="shortcut icon" href="http://192.168.0.100:1111/favicon.ico" type="image/x-icon">
+    <link href="files/css.css" rel="stylesheet">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            font-family: 'Poppins', sans-serif;
+            --primary: #1e252f;
+            --text: #eee5e9;
+
+            color: var(--text);
+        }
+
+        body {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            background-color: var(--primary);
+            min-height: 100vh;
+        }
+
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        section {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        
+        section::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: linear-gradient(#f00, #f0f);
+            clip-path: circle(25% at right 60%);
+        }
+
+        section::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: linear-gradient(#2785ce, #e91e63);
+            clip-path: circle(20% at 10% 10%);
+        }
+
+        
+
+        #div-zoom {
+            position: fixed;
+            z-index: 9999;
+            top: 49%;
+            bottom: 49%;
+            left: -120px;
+            transform: rotateZ(-90deg);
+            font-size: 1.2rem;
+        }
+
+        #div-zoom .rotate {
+            position: absolute;
+            top: -8px;
+            right: -40px;
+             
+            transform: rotate(45deg);
+            cursor: pointer;
+        }
+
+        #div-zoom #zoom {
+            width: 300px;
+            -webkit-appearance: none;  
+            appearance: none;
+            height: 15px;  
+            background: #d3d3d3;  
+            outline: none;  
+            -webkit-transition: .2s;  
+            transition: opacity .2s;
+            color: #eee5e9;
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px) saturate(180%);
+        }
+
+        #div-zoom #zoom:hover {
+            opacity: 1;  
+        }
+
+        #div-zoom #zoom::-webkit-slider-thumb {
+            -webkit-appearance: none;  
+            appearance: none;
+            width: 25px;  
+            height: 25px;  
+            background: linear-gradient(#2785ce, #e91e63);
+            border-radius: 13px;
+            cursor: pointer;  
+        }
+
+        #div-zoom #zoom::-moz-range-thumb {
+            width: 25px;  
+            height: 25px;  
+            background: linear-gradient(#2785ce, #e91e63);
+            border-radius: 13px;
+            cursor: pointer;  
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            transform-origin: top left;
+        }
+
+        .container #filter {
+            width: 400px;
+            height: 50px;
+            font-size: 1.2em;
+            text-align: center;
+            color: #eee5e9;
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            margin: 20px;
+            padding: 5px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px) saturate(180%);
+        }
+
+        .container #filter:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .container #filter::placeholder {
+            font-size: 1.3em;
+            color: rgba(238, 229, 233, 0.8);
+            text-align: center;
+        }
+
+        .container #filter:focus::placeholder {
+            opacity: 0.3;
+        }
+
+        .container h3 {
+            width: 100%;
+        }
+
+        .container h5 {
+            width: 100%;
+            font-weight: 200;
+            margin-top: 5px;
+        }
+
+        .container .card {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 20em;
+            height: 11.5em;
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            margin: 20px;
+            padding: 5px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px) saturate(180%);
+            font-size: 1.5em;
+            font-weight: 700;
+        }
+
+        .container hr {
+            width: 80%;
+            margin: 20px;
+        }
+
+        .container > .card .content {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            flex: 1 1 auto;
+            opacity: 0.6;
+            transition: opacity 300ms;
+            width: 100%;
+            height: 100%;
+        }
+
+        .container > .card.not-running .content {
+            opacity: 0.4;
+        }
+
+        .container > .card:not(.not-running):hover .content {
+            opacity: 1;
+        }
+
+        .container > .card .content div {
+            margin: 10px 0;
+        }
+
+         
+         
+         
+         
+
+        .container > .card .content .img {
+            position: relative;
+            width: calc((230 / 400) * 8em);
+            height: calc((230 / 400) * 8em);
+            border-radius: 50%;
+            overflow: hidden;
+            border: 10px solid rgba(0, 0, 0, 0.25);
+        }
+
+        .container > .card .img img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body style="font-size: 1.07rem;">
+<section>
+    <div id="div-zoom">
+        <div class="rotate">
+            <label for="zoom" class="rotate">Zoom <span id="zoom-value">107</span>%</label>
+        </div>
+        <input type="range" id="zoom" name="zoom" min="50" max="150" value="107">
+    </div>
+    <div class="container" id="container">
+        <input autofocus="" id="filter" name="filter" placeholder="filter" type="search">
+        <label for="filter"></label>
+            
+            <h3>Startpage</h3>
+            <h5></h5>
+
+            <div class="card">
+                <a href="https://google.com" target="_blank">
+                    <div class="content">
+                        <div class="title">
+                            <h3>Google</h3>
+                        </div>
+                        <div class="img">
+                            <img src="files/google.png" alt="">
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="card">
+                <a href="https://mail.google.com" target="_blank">
+                    <div class="content">
+                        <div class="title">
+                            <h3>GMail</h3>
+                        </div>
+                        <div class="img">
+                            <img src="files/Gmail.png" alt="">
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="card">
+                <a href="https://youtube.com" target="_blank">
+                    <div class="content">
+                        <div class="title">
+                            <h3>Youtube</h3>
+                        </div>
+                        <div class="img">
+                            <img src="files/youtube.png" alt="">
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="card">
+                <a href="https://music.youtube.com" target="_blank">
+                    <div class="content">
+                        <div class="title">
+                            <h3>Youtube Music</h3>
+                        </div>
+                        <div class="img">
+                            <img src="files/YoutubeMusic.png" alt="">
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="card">
+                <a href="https://youtu.be/_daTfgc4u3k" target="_blank">
+                    <div class="content">
+                        <div class="title">
+                            <h3>Live Music</h3>
+                        </div>
+                        <div class="img">
+                            <img src="files/livemusic.png" alt="">
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="card">
+                <a href="https://github.com" target="_blank">
+                    <div class="content">
+                        <div class="title">
+                            <h3>Github</h3>
+                        </div>
+                        <div class="img">
+                            <img src="files/github.png" alt="">
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="card">
+                <a href="https://moodle.rbz-technik.de/login/index.php" target="_blank">
+                    <div class="content">
+                        <div class="title">
+                            <h3>Moddle</h3>
+                        </div>
+                        <div class="img">
+                            <img src="files/moodle.png" alt="">
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+                <div class="card">
+                    <a href="https://poly.webuntis.com/WebUntis/?school=rbz-technik#/basic/login" target="_blank">
+                        <div class="content">
+                            <div class="title">
+                                <h3>Webuntis</h3>
+                            </div>
+                            <div class="img">
+                                <img src="files/UntisMobile.png" alt="">
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            
+                <div class="card">
+                    <a href="https://app.plex.tv" target="_blank">
+                        <div class="content">
+                            <div class="title">
+                                <h3>Plex</h3>
+                            </div>
+                            <div class="img">
+                                <img src="files/plex.png" alt="">
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            
+                <div class="card">
+                    <a href="http://192.168.0.100:8123/" target="_blank">
+                        <div class="content">
+                            <div class="title">
+                                <h3>Home-Assistant-Core</h3>
+                            </div>
+                            <div class="img">
+                                <img src="files/Home-Assistant-Core-icon.png" alt="">
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            
+                <div class="card">
+                    <a href="http://192.168.0.100:7807/" target="_blank">
+                        <div class="content">
+                            <div class="title">
+                                <h3>JDownloader2</h3>
+                            </div>
+                            <div class="img">
+                                <img src="files/JDownloader2-icon.png" alt="">
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            
+                <div class="card">
+                    <a href="http://192.168.0.2/" target="_blank">
+                        <div class="content">
+                            <div class="title">
+                                <h3>Nextcloud</h3>
+                            </div>
+                            <div class="img">
+                                <img src="files/Nextcloud-icon.png" alt="">
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="card">
+                    <a href="https://snapcraft.io/" target="_blank">
+                        <div class="content">
+                            <div class="title">
+                                <h3>Snapstore</h3>
+                            </div>
+                            <div class="img">
+                                <img src="files/snapcraft.png" alt="">
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            
+                <div class="card">
+                    <a href="https://academy.hackthebox.com/login" target="_blank">
+                        <div class="content">
+                            <div class="title">
+                                <h3>Hackthebox</h3>
+                            </div>
+                            <div class="img">
+                                <img src="files/htb.png" alt="">
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.twitch.tv/" target="_blank">
+                        <div class="content">
+                            <div class="title">
+                                <h3>Twitch</h3>
+                            </div>
+                            <div class="img">
+                                <img src="files/twitch.png" alt="">
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.amazon.de/" target="_blank">
+                        <div class="content">
+                            <div class="title">
+                                <h3>Amazon</h3>
+                            </div>
+                            <div class="img">
+                                <img src="files/amazon.png" alt="">
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            
+        
+        <hr>
+        
+    </div>
+</section>
+
+<script>
+    const zoom = document.getElementById("zoom")
+    const localZoom = localStorage.getItem("size")
+    const zoomValue = document.getElementById("zoom-value")
+
+    document.body.addEventListener('load', function () {
+        console.log(this.style.fontSize);
+    })
+
+    if (localZoom == null) {
+        zoom.setAttribute("value", 100)
+        zoomValue.innerText = "100"
+    } else {
+        zoom.setAttribute("value", localZoom)
+        document.body.style.fontSize = (localZoom / 100) + 'rem'
+        zoomValue.innerText = localZoom
+    }
+
+    const input = document.getElementById("filter")
+    input.addEventListener('keyup', function () {
+        const card = document.getElementsByClassName("card")
+        const filter = input.value.toUpperCase()
+
+        for (let c = 0; c < card.length; c++) {
+            const title = card[c].querySelector(".title > h3")
+            const up = title.innerText.toUpperCase()
+            if (up.indexOf(filter) > -1) {
+                card[c].style.display = ""
+            } else {
+                card[c].style.display = "none"
+            }
+        }
+    })
+
+    input.addEventListener('search', function () {
+        console.log("click")
+        const card = document.getElementsByClassName("card")
+        for (let c = 0; c < card.length; c++) {
+            card[c].style.display = ""
+        }
+    })
+
+    document.getElementById('zoom').addEventListener('input', function (e) {
+        const percent = parseFloat(e.target.value);
+        document.body.style.fontSize = (percent / 100) + 'rem'
+        zoomValue.innerText = percent.toString()
+        localStorage.setItem("size", percent.toString())
+    })
+
+    document.querySelector('label.rotate').addEventListener('click', function () {
+        document.body.style.fontSize = '1rem'
+        zoomValue.innerText = '100'
+        localStorage.setItem("size", '100')
+        zoom.value = 100
+    })
+
+</script>
+
+
+</body></html>
